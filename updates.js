@@ -3,7 +3,7 @@
 const UPDATE_ID='invite-rooms-2026-11-13';
 const UPDATE_HIDE_KEY='cato-hidden-update';
 function showUpdates(){
- panel(`<h2>What’s new! ✦</h2><p>Invite your friends to Cato pew pew.</p><ul class="updateList">
+ panel(`<h2>What’s new! ✦</h2><p>The detail & animation update.</p><ul class="updateList"><li><strong>More life:</strong> blinking cats, breathing, collars, paw details, moving weapon sway, and punchier muzzle flashes.</li><li><strong>Richer places:</strong> benches, flowers, waving pennants, floating pool rings, patterned decks, and distance haze.</li>
  <li><strong>Create a server:</strong> get a fresh eight-letter uppercase invite code.</li>
  <li><strong>Join other:</strong> find it beside Settings. Type a code and press Enter. Codes expire when everyone leaves.</li>
  <li><strong>Walking cats:</strong> alternating paw steps and arm movement, including other players online.</li>
