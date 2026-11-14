@@ -2,3 +2,14 @@
 
 /* Keep the entire play surface clickable; only actual HUD controls intercept input. */
 body.playing header,body.playing #hud,body.playing footer{pointer-events:none}body.playing header a,body.playing #pause{pointer-events:auto}#arena{outline:none}body.playing #arena{cursor:crosshair}body.playing #crosshair{text-shadow:0 1px 3px #123;font-weight:bold}body.playing .brand{color:#173d54}body.playing .brand span{color:#173d54}
+
+.accountLink{display:inline-block;text-decoration:none}#nickname{max-width:60%;padding:12px;border:1px solid #91b3a0;background:#213b42;color:white;border-radius:6px}nav{flex-wrap:wrap}
+
+/* FPS reticle is fixed to the view center, never the cursor. */
+body.playing #arena{cursor:none}#crosshair{width:23px;height:23px;line-height:23px;text-align:center;font-size:25px!important;color:white;filter:drop-shadow(0 1px 1px #16313d);background:linear-gradient(currentColor,currentColor) center top/2px 6px no-repeat,linear-gradient(currentColor,currentColor) center bottom/2px 6px no-repeat,linear-gradient(currentColor,currentColor) left center/6px 2px no-repeat,linear-gradient(currentColor,currentColor) right center/6px 2px no-repeat,radial-gradient(circle,currentColor 0 1px,transparent 1.5px) center/3px 3px no-repeat}
+
+body.playing.paused #arena{cursor:auto}body.paused #crosshair{display:none!important}
+
+#roomCode{display:block;width:100%;padding:16px;margin:12px 0 20px;font:700 26px monospace;letter-spacing:.3em;text-transform:uppercase;color:#d7ff72;background:#213b42;border:1px solid #8db3a1;border-radius:8px}.inviteCode{font:700 24px monospace;letter-spacing:.15em;color:#d7ff72}#joinRoomForm label{margin-bottom:0}
+
+.updateList{padding-left:22px;color:#c8dbd4;line-height:1.5}.updateList li{margin:10px 0}.updateActions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.updateActions .primary{min-width:190px;margin:0}#updateNotice{font-size:12px}
