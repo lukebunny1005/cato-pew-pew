@@ -2,8 +2,16 @@
 // Public matches use the hosted API. Solo play remains completely offline.
 const solo={start,update,fire,lobby,pause,finish};
 const net={active:false,id:null,token:null,busy:false,shotBusy:false,timer:null,epoch:0,hitSeq:0,xp:0,dead:false,previousMap:null,failures:0,roomCode:null,joining:false};
-async function publicApi(action,data={}){const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),6000);try{const response=await fetch('api/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:net.id,token:net.token,...data}),signal:controller.signal});const result=await response.json();if(!response.ok)throw Error(result.error||'Server unavailable');return result}finally{clearTimeout(timeout)}}
-function leavePublic(){if(!net.active)return;const credentials={id:net.id,token:net.token};net.active=false;net.epoch++;clearInterval(net.timer);net.timer=null;fetch('api/leave',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(credentials),keepalive:true}).catch(()=>{});if(net.previousMap){save.map=net.previousMap;net.previousMap=null;persist()}bots=[];for(let i=0;i<6;i++){const b={};spawn(b,i);bots.push(b)}$('networkStatus')?.remove();}
+// GitHub Pages hosts the client; the existing Worker hosts multiplayer and its database.
+const arenaApiBase=location.hostname==='lukebunny1005.github.io'?'https://cato-pew-pew-luke-arcade.ochrescarf21.chatgpt.site/api/':new URL('api/',document.baseURI).href;
+async function publicApi(action,data={}){const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),10000);try{
+ const response=await fetch(arenaApiBase+action,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({id:net.id,token:net.token,...data}),signal:controller.signal});
+ if(!(response.headers.get('Content-Type')||'').includes('application/json'))throw Error('Multiplayer returned a webpage instead of game data (HTTP '+response.status+'). Reload the game and try again. A copied site needs the multiplayer backend.');
+ let result;try{result=await response.json()}catch{throw Error('The multiplayer response was incomplete. Please try again.')}
+ if(!response.ok)throw Error(result?.error||'Server unavailable (HTTP '+response.status+'). Please try again.');
+ if(!result||typeof result!=='object'||Array.isArray(result))throw Error('Invalid multiplayer response. Please try again.');return result;
+ }catch(error){if(error.name==='AbortError')throw Error('The multiplayer server took too long to respond. Please try again.');throw error}finally{clearTimeout(timeout)}}
+function leavePublic(){if(!net.active)return;const credentials={id:net.id,token:net.token};net.active=false;net.epoch++;clearInterval(net.timer);net.timer=null;fetch(arenaApiBase+'leave',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(credentials),keepalive:true}).catch(()=>{});if(net.previousMap){save.map=net.previousMap;net.previousMap=null;persist()}bots=[];for(let i=0;i<6;i++){const b={};spawn(b,i);bots.push(b)}$('networkStatus')?.remove();}
 lobby=function(){leavePublic();solo.lobby()};
 start=function(){leavePublic();solo.start()};
 $('play').onclick=start;
