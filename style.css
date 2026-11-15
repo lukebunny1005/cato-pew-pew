@@ -38,3 +38,6 @@ body.christmas{background:#102b28}.christmas .vignette{background:linear-gradien
 
 /* Always offer a way to show phone controls while a round is running. */
 #touchToggle{position:fixed;right:max(12px,env(safe-area-inset-right));top:176px;pointer-events:auto;background:#163c36e8;color:#fff;border:1px solid #ffffff80;border-radius:10px;padding:12px;min-height:44px;z-index:7}.touch #touchToggle{display:none}body.paused #touchToggle{display:none}
+
+/* Keep small-screen menus readable and their close action easy to reach. */
+.touch dialog .close{position:sticky;display:block;margin:-18px -8px 0 auto;top:0;right:auto;width:44px;height:44px;min-height:44px;border-radius:50%;background:#14382ff5;z-index:2}.touch dialog h2{font-size:26px;padding-right:10px}.touch .updateList{font-size:14px;line-height:1.45}.touch .updateActions{display:grid;grid-template-columns:1fr;gap:10px}.touch .updateActions button{min-height:44px;width:100%;text-align:center}.touch dialog label{margin:16px 0}.touch dialog select{min-height:44px}.touch #lobby nav button{min-height:44px}.touch #lobby .intro{font-size:14px}
