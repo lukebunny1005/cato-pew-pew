@@ -1,11 +1,11 @@
 {
-  "version": "26423d30c209",
+  "version": "29f9f14f1fd1",
   "sha256": {
-    "index.html": "967311eeba8b54be7234168295f025eb04232ae736d7d436b214e8d64da12209",
-    "style.css": "3e0d714750b1be83977e5a4cf3b86f73643348033de3d5ab7325387c7a7d19a6",
-    "game.js": "120a143ef649db38e0a902d41aaabb9a157da0b1c3713a08ad6527adb339ac59",
+    "index.html": "3bd0beb44ad25fd61c9da8763436393573f1b9e91b182f0cb703ecad56bb61b7",
+    "style.css": "9b2cfe511a7ae5598cec28f90b66063be6485c95c339c02ddc207b5255726347",
+    "game.js": "389c79a9ba65255de3edf639bda4ff9ac198af3fddda9f2a95c0c3f4d745ab4e",
     "multiplayer.js": "8306fd288ea1c404e3fde698d0a734eba8377b810082ff06f69176d89426f7d9",
     "input-guard.js": "5f36b0b9ed80a4d51040776746e0484461afa80faf53cc54f95d6caae4f7db0a",
-    "updates.js": "292f01a5c59100852a15fc838296e559e9f27bfdeeee251c644a7069f72fa8c5"
+    "updates.js": "2ce818ba04c358e9bc7a7e2a0f97ea096143305c4d330ed79097902bf61f65ad"
   }
 }
