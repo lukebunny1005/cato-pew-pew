@@ -1,11 +1,36 @@
-# Cato pew pew — GitHub Pages
+# Cato pew pew — Christmas Edition
 
-Release: 73ccc3ceedb4
+A first-person cat arena game with a free snowy Christmas Village.
 
-Unzip this package. Upload ALL its files to the existing publishing folder of lukebunny1005/cato-pew-pew, replacing the old files. Upload the contents, not the ZIP or an extra enclosing folder. Keep index.html at the publishing root.
+[Play Cato pew pew](https://lukebunny1005.github.io/cato-pew-pew/)
 
-Includes Christmas Village, festive menus, snowfall, sprint/stamina, spotting, hiding, five-second notices, and the graphics compatibility fix. Versioned asset URLs prevent old cached scripts and styles from mixing with a new page. release.json records the file hashes.
+## Controls
 
-Solo works on static hosting. Multiplayer on lukebunny1005.github.io connects to https://cato-pew-pew-luke-arcade.ochrescarf21.chatgpt.site/api/ and requires that hosted backend to remain online. No login or secrets are included.
+- WASD or arrow keys: move
+- Mouse: look; click or F: shoot
+- Space: jump; Shift: sprint
+- E: dance
+- 2: pause/resume and release the mouse
 
-After GitHub Pages finishes deployment, press Ctrl+Shift+R. Progress, selected map, graphics settings, and popup choices are saved separately on GitHub and the side-panel website. For matching visuals, select Christmas Village and the same Graphics setting on both.
+## Game modes
+
+Solo: pick a map, unlock weapons, earn XP, and escape cats by hiding for three seconds. Christmas Village includes snow, Santa hats, trees, presents, and a lodge.
+
+Multiplayer: create a room or enter a friend's eight-letter code under Join other. The public multiplayer backend is hosted separately; no account is needed.
+
+## Files
+
+| File | Purpose |
+| --- | --- |
+| index.html | Page and menus |
+| style.css | Christmas theme and interface styles |
+| game.js | Rendering, maps, movement, weapons, and solo gameplay |
+| multiplayer.js | Connection to the hosted multiplayer backend |
+| input-guard.js | Key release and focus handling |
+| updates.js | Current-release update popup |
+| release.json | File checksums for this release |
+| .nojekyll | Serves these files directly through GitHub Pages |
+
+This release includes the fix for walking and sprinting while jumping. The game remembers progress and settings in each browser. Performance graphics are the default.
+
+To update, replace the complete frontend release together. Keep index.html at the repository root. Asset version tags prevent mixing cached files from different releases.
