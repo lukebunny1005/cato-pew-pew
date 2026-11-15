@@ -1,0 +1,11 @@
+{
+  "version": "73ccc3ceedb4",
+  "sha256": {
+    "index.html": "f711d8d57bcbf1d803185862ef0bd90d98709d167003cd86eb64e0844c430811",
+    "style.css": "db6f6bdb34795bd7a2e4916480a9eb5c91a7f21846cebc89f8249203089bcf6f",
+    "game.js": "0566f4f5a1f8b438cf80e8f6df4881ebaf0e1ff38ebe75e926a2fd1e1a384b30",
+    "multiplayer.js": "1d8ffe0b30754755f7c90e47cf0992ffb3414905d3baf9ebe5fa6db8b3153f00",
+    "input-guard.js": "5f36b0b9ed80a4d51040776746e0484461afa80faf53cc54f95d6caae4f7db0a",
+    "updates.js": "cbf16444b5f2c1de1c7d74334bdab87825e73c265fd66f7b33dd6653b99701f9"
+  }
+}
