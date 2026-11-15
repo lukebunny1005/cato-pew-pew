@@ -37,7 +37,7 @@ function knockout(b,ray){b.hp=0;b.respawn=3;b.aware=false;b.moveX=b.moveZ=0;b.vy
 function updateKnockout(b,dt){b.moveX=b.moveZ=0;b.respawn=Math.max(0,b.respawn-dt);physics(b,dt);}
 
 for(let i=0;i<6;i++){let b={};spawn(b,i);bots.push(b)}
-function start(){resetTouch();stamina=100;sprintExhausted=false;pursuitActive=false;noticeUntil=0;$('spotNotice').hidden=true;ensureWorld();mode='play';score=0;health=100;Object.assign(player,{x:0,y:0,z:9,vx:0,vy:0,vz:0,yaw:0,pitch:0,grounded:true,moveX:0,moveZ:0});bots.forEach(spawn);resetHealthPacks();damageNumbers=[];particles=[];tracers=[];keys.clear();$('modal').close();$('lobby').hidden=true;$('sceneLabel').hidden=true;$('hud').hidden=false;$('crosshair').hidden=false;document.body.classList.remove('paused');document.body.classList.add('playing');syncHud();cool=0;aimX=aimY=0;mouseDown=false;canvas.focus();toast(touch.enabled?'Drag thumbstick · swipe to aim · hold FIRE':'FIRST PERSON · headshots deal 2× damage · L for mouse look');lockMouse();}
+function start(){if(typeof matchMedia==='function')setTouchMode();resetTouch();stamina=100;sprintExhausted=false;pursuitActive=false;noticeUntil=0;$('spotNotice').hidden=true;ensureWorld();mode='play';score=0;health=100;Object.assign(player,{x:0,y:0,z:9,vx:0,vy:0,vz:0,yaw:0,pitch:0,grounded:true,moveX:0,moveZ:0});bots.forEach(spawn);resetHealthPacks();damageNumbers=[];particles=[];tracers=[];keys.clear();$('modal').close();$('lobby').hidden=true;$('sceneLabel').hidden=true;$('hud').hidden=false;$('crosshair').hidden=false;document.body.classList.remove('paused');document.body.classList.add('playing');syncHud();cool=0;aimX=aimY=0;mouseDown=false;canvas.focus();toast(touch.enabled?'Drag thumbstick · swipe to aim · hold FIRE':'FIRST PERSON · headshots deal 2× damage · L for mouse look');lockMouse();}
 function syncHud(){$('health').textContent=Math.ceil(health);$('healthBar').style.width=health+'%';$('score').textContent=score}
 function lobby(){resetTouch();mode='lobby';document.exitPointerLock?.();$('modal').close();$('lobby').hidden=false;$('sceneLabel').hidden=false;$('hud').hidden=true;$('crosshair').hidden=true;document.body.classList.remove('paused');document.body.classList.remove('playing');bots.forEach(spawn);}
 function panel(html){resetTouch();mouseDown=false;lookDrag=false;keys.clear();player.moveX=player.moveZ=0;document.body.classList.add('paused');$('crosshair').hidden=true;if(mode==='play')mode='pause';document.exitPointerLock?.();$('menuBody').innerHTML=html;if(!$('modal').open)$('modal').showModal()}
@@ -215,15 +215,21 @@ function resetTouch(){touch.x=touch.y=0;touch.fire=touch.jump=touch.sprint=false
 function updateTouchKeys(){if([...touch.pointers.values()].some(p=>p.kind==='move'))return;touch.x=touch.y=0;}
 function touchLook(dx,dy){player.yaw-=dx*.004;player.pitch=Math.max(-1.1,Math.min(1.1,player.pitch+dy*.004));}
 function touchMove(x,y){const length=Math.hypot(x,y),scale=Math.max(42,length);touch.x=length<7?0:x/scale;touch.y=length<7?0:y/scale;$('moveKnob').style.transform='translate(calc(-50% + '+touch.x*42+'px),calc(-50% + '+touch.y*42+'px))';}
-function setTouchMode(){resetTouch();touch.enabled=save.touchMode==='on'||(save.touchMode!=='off'&&(matchMedia('(any-pointer: coarse)').matches||navigator.maxTouchPoints>0||Math.min(innerWidth,innerHeight)<=700));document.body.classList[touch.enabled?'add':'remove']('touch');}
-function initTouch(){if(typeof matchMedia!=='function')return;setTouchMode();
+function phoneControlsNeeded(){const nav=typeof navigator==='undefined'?{}:navigator;return (typeof matchMedia==='function'&&matchMedia('(any-pointer: coarse)').matches)||(nav.maxTouchPoints||0)>0||/Android|iPhone|iPad|iPod|Mobile/i.test(nav.userAgent||'')||Math.min(innerWidth,innerHeight)<=700;}
+function enablePhoneControls(){resetTouch();touch.enabled=true;document.body.classList.add('touch');}
+function setTouchMode(){resetTouch();touch.enabled=save.touchMode==='on'||(save.touchMode!=='off'&&phoneControlsNeeded());document.body.classList[touch.enabled?'add':'remove']('touch');}
+
+function initTouch(){if(typeof navigator==='undefined')return;setTouchMode();
  function bind(element,kind){element.addEventListener('pointerdown',e=>{if(!touch.enabled||mode!=='play')return;e.preventDefault();if([...touch.pointers.values()].some(p=>p.kind===kind))return;const p={kind,x:e.clientX,y:e.clientY};touch.pointers.set(e.pointerId,p);try{element.setPointerCapture?.(e.pointerId)}catch{}element.classList?.add('held');updateTouchKeys();if(kind==='fire')touch.fire=true;if(kind==='jump')touch.jump=true;});
  element.addEventListener('pointermove',e=>{const p=touch.pointers.get(e.pointerId);if(!p||mode!=='play')return;e.preventDefault();if(kind==='move')touchMove(e.clientX-p.x,e.clientY-p.y);else if(kind==='look'||kind==='fire'){touchLook(e.clientX-p.x,e.clientY-p.y);p.x=e.clientX;p.y=e.clientY;}});
  function release(e){const p=touch.pointers.get(e.pointerId);if(!p)return;touch.pointers.delete(e.pointerId);element.classList?.remove('held');updateTouchKeys();if(kind==='move')touchMove(0,0);if(kind==='fire')touch.fire=false;if(kind==='jump')touch.jump=false;}
  for(const event of ['pointerup','pointercancel','lostpointercapture'])element.addEventListener(event,release);element.addEventListener('contextmenu',e=>e.preventDefault());
  }
  bind($('movePad'),'move');bind(canvas,'look');bind($('touchFire'),'fire');bind($('touchJump'),'jump');
- $('enableTouch').onclick=()=>{save.touchMode='on';persist();setTouchMode();start();};
+ $('enableTouch').onclick=()=>{save.touchMode='on';persist();enablePhoneControls();start();};
+ $('touchToggle').onclick=()=>{save.touchMode='on';persist();enablePhoneControls();document.exitPointerLock?.();toast('Touch controls on · drag the left thumbstick');};
+ // A real screen touch is stronger evidence than desktop-mode browser detection.
+ addEventListener('touchstart',()=>{if(!touch.enabled){save.touchMode='on';enablePhoneControls();}},{passive:true,capture:true});
  $('touchSprint').onclick=()=>{if(mode!=='play')return;touch.sprint=!touch.sprint;$('touchSprint').setAttribute('aria-pressed',String(touch.sprint));};
  $('touchDance').onclick=()=>{if(mode==='play'){danceUntil=t+2.5;toast(save.dance+'! ♫')}};
  addEventListener('pointerup',e=>{const p=touch.pointers.get(e.pointerId);if(!p)return;touch.pointers.delete(e.pointerId);updateTouchKeys();if(p.kind==='move')touchMove(0,0);if(p.kind==='fire')touch.fire=false;if(p.kind==='jump')touch.jump=false;});
